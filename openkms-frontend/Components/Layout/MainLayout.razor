@@ -1,0 +1,130 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components
+@using OpenKMS.Services
+@using OpenKMS.Models
+@using OpenKMS.Models.Enums
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<div class="min-h-screen" style="background-color: #FFF8DC;">
+    @if (showNavbar)
+    {
+        <nav class="shadow-lg" style="background-color: #003366;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-2xl font-bold text-white">OpenKMS</h1>
+                        </div>
+                        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                            <NavLink href="/" class="nav-link">
+                                Dashboard
+                            </NavLink>
+                            <NavLink href="/trainings" class="nav-link">
+                                Trainings
+                            </NavLink>
+                            <NavLink href="/my-registrations" class="nav-link">
+                                My Registrations
+                            </NavLink>
+                            @if (UserHasAdminRole)
+                            {
+                                <NavLink href="/admin" class="nav-link">
+                                    Admin
+                                </NavLink>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-white text-sm">@currentUser?.FullName</span>
+                        <button onclick="@Logout" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    }
+
+    <main>
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            @Body
+        </div>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<style>
+    .nav-link {
+        color: #FFF8DC !important;
+        text-decoration: none;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+        background-color: #002244 !important;
+    }
+
+    .nav-link.active {
+        background-color: #002244 !important;
+        font-weight: 600;
+    }
+</style>
+
+@code {
+    private bool showNavbar = false;
+    private User? currentUser;
+    private bool UserHasAdminRole = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckAuthentication();
+    }
+
+    private async Task CheckAuthentication()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (isAuthenticated && !NavigationManager.Uri.Contains("/login") && !NavigationManager.Uri.Contains("/register"))
+        {
+            showNavbar = true;
+            await LoadUserData();
+        }
+        else
+        {
+            showNavbar = false;
+            if (!NavigationManager.Uri.Contains("/login") && !NavigationManager.Uri.Contains("/register"))
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+        }
+    }
+
+    private async Task LoadUserData()
+    {
+        try
+        {
+            currentUser = await AuthService.GetCurrentUserAsync();
+            if (currentUser != null)
+            {
+                UserHasAdminRole = currentUser.Role == UserRole.ADMIN;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to load user data: {ex.Message}");
+        }
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        NavigationManager.NavigateTo("/login");
+    }
+}

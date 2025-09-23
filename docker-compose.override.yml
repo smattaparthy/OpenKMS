@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    environment:
+      - DEBUG=True
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./openkms-backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    volumes:
+      - ./openkms-frontend:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+
+  postgres:
+    environment:
+      - POSTGRES_PASSWORD=dev_password
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"

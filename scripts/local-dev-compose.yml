@@ -1,0 +1,97 @@
+# Local Development Docker Compose Configuration
+# This configuration is optimized for local development
+# Use this for individual development work
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database (Development)
+  postgres:
+    image: postgres:15-bullseye
+    container_name: openkms-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: openkms
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: openkms
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - openkms-dev-network
+
+  # Redis Cache (Development)
+  redis:
+    image: redis:7-alpine
+    container_name: openkms-redis-dev
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_dev_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - openkms-dev-network
+
+  # Backend API (Development)
+  backend:
+    build:
+      context: ./openkms-backend
+      dockerfile: Dockerfile.dev
+    container_name: openkms-backend-dev
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://openkms:dev_password@postgres/openkms
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=dev-secret-key-change-in-production
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - REFRESH_TOKEN_EXPIRE_MINUTES=10080
+      - DEBUG=True
+      - LOG_LEVEL=DEBUG
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend
+    volumes:
+      - ./openkms-backend:/app
+      - openkms_dev_logs:/app/logs
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - openkms-dev-network
+
+  # Frontend (Development)
+  frontend:
+    build:
+      context: ./openkms-frontend
+      dockerfile: Dockerfile.dev
+    container_name: openkms-frontend-dev
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ApiSettings__BaseUrl=http://localhost:8000
+      - ApiSettings__Version=v1
+      - ApiSettings__TimeoutSeconds=30
+    volumes:
+      - ./openkms-frontend:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    networks:
+      - openkms-dev-network
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+  openkms_dev_logs:
+    driver: local
+
+networks:
+  openkms-dev-network:
+    driver: bridge

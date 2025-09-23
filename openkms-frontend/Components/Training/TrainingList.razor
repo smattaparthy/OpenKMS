@@ -1,0 +1,277 @@
+@page "/trainings"
+@using OpenKMS.Services
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Trainings - OpenKMS</PageTitle>
+
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="rounded-lg shadow p-6" style="background-color: #003366; color: #FFF8DC;">
+        <h1 class="text-3xl font-bold mb-2">Available Trainings</h1>
+        <p class="text-lg" style="color: #FFF8DC; opacity: 0.9;">
+            Browse and register for upcoming training sessions
+        </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="rounded-lg shadow p-6" style="background-color: white;">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color: #003366;">Search</label>
+                <InputText type="text" placeholder="Search trainings..."
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color: #003366;">Category</label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Categories</option>
+                    <option value="SECURITY">Security</option>
+                    <option value="LEADERSHIP">Leadership</option>
+                    <option value="TECHNICAL">Technical</option>
+                    <option value="COMPLIANCE">Compliance</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color: #003366;">Level</label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Levels</option>
+                    <option value="BEGINNER">Beginner</option>
+                    <option value="INTERMEDIATE">Intermediate</option>
+                    <option value="ADVANCED">Advanced</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color: #003366;">Status</label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Status</option>
+                    <option value="PUBLISHED">Published</option>
+                    <option value="DRAFT">Draft</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-4 flex justify-end">
+            <button class="px-4 py-2 rounded text-sm font-medium" style="background-color: #003366; color: #FFF8DC;">
+                Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Training Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Training Card 1 -->
+        <div class="rounded-lg shadow-lg overflow-hidden" style="background-color: white;">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="px-2 py-1 text-xs font-medium rounded" style="background-color: #E6F2FF; color: #003366;">
+                        SECURITY
+                    </span>
+                    <span class="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
+                        PUBLISHED
+                    </span>
+                </div>
+                <h3 class="text-xl font-semibold mb-2" style="color: #003366;">Security Awareness Training</h3>
+                <p class="text-gray-600 mb-4">Comprehensive security awareness covering data protection, threat identification, and best practices.</p>
+
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Dec 15, 2023 • 10:00 AM
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Conference Room A
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        2 hours • 1 credit
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">12/15 spots available</span>
+                    <button class="px-4 py-2 rounded text-sm font-medium" style="background-color: #003366; color: #FFF8DC;">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Card 2 -->
+        <div class="rounded-lg shadow-lg overflow-hidden" style="background-color: white;">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="px-2 py-1 text-xs font-medium rounded" style="background-color: #E6F2FF; color: #003366;">
+                        LEADERSHIP
+                    </span>
+                    <span class="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
+                        PUBLISHED
+                    </span>
+                </div>
+                <h3 class="text-xl font-semibold mb-2" style="color: #003366;">Leadership Development Workshop</h3>
+                <p class="text-gray-600 mb-4">Enhance your leadership skills with practical strategies for team management and decision making.</p>
+
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Dec 20, 2023 • 2:00 PM
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Training Room B
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        4 hours • 2 credits
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">8/20 spots available</span>
+                    <button class="px-4 py-2 rounded text-sm font-medium" style="background-color: #003366; color: #FFF8DC;">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Card 3 -->
+        <div class="rounded-lg shadow-lg overflow-hidden" style="background-color: white;">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="px-2 py-1 text-xs font-medium rounded" style="background-color: #E6F2FF; color: #003366;">
+                        COMPLIANCE
+                    </span>
+                    <span class="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
+                        PUBLISHED
+                    </span>
+                </div>
+                <h3 class="text-xl font-semibold mb-2" style="color: #003366;">Data Privacy Best Practices</h3>
+                <p class="text-gray-600 mb-4">Learn essential data privacy principles and regulatory compliance requirements for modern organizations.</p>
+
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Dec 22, 2023 • 11:00 AM
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Virtual Training
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        3 hours • 1 credit
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">15/25 spots available</span>
+                    <button class="px-4 py-2 rounded text-sm font-medium" style="background-color: #003366; color: #FFF8DC;">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Card 4 -->
+        <div class="rounded-lg shadow-lg overflow-hidden" style="background-color: white;">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="px-2 py-1 text-xs font-medium rounded" style="background-color: #E6F2FF; color: #003366;">
+                        TECHNICAL
+                    </span>
+                    <span class="px-2 py-1 text-xs font-medium rounded bg-yellow-100 text-yellow-800">
+                        DRAFT
+                    </span>
+                </div>
+                <h3 class="text-xl font-semibold mb-2" style="color: #003366;">Advanced Project Management</h3>
+                <p class="text-gray-600 mb-4">Master advanced project management methodologies including Agile, Scrum, and DevOps integration.</p>
+
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Jan 5, 2024 • 9:00 AM
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Conference Room C
+                    </div>
+                    <div class="flex items-center text-sm" style="color: #6c757d;">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        8 hours • 3 credits
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">Coming Soon</span>
+                    <button class="px-4 py-2 rounded text-sm font-medium bg-gray-300 text-gray-500" disabled>
+                        Registration Closed
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-between border-t border-gray-200 pt-4">
+        <div class="text-sm text-gray-700">
+            Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">12</span> results
+        </div>
+        <div class="flex space-x-2">
+            <button class="px-3 py-2 text-sm font-medium rounded bg-gray-200 text-gray-700">
+                Previous
+            </button>
+            <button class="px-3 py-2 text-sm font-medium rounded" style="background-color: #003366; color: #FFF8DC;">
+                1
+            </button>
+            <button class="px-3 py-2 text-sm font-medium rounded bg-gray-200 text-gray-700">
+                2
+            </button>
+            <button class="px-3 py-2 text-sm font-medium rounded bg-gray-200 text-gray-700">
+                3
+            </button>
+            <button class="px-3 py-2 text-sm font-medium rounded bg-gray-200 text-gray-700">
+                Next
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}

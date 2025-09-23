@@ -1,0 +1,187 @@
+@page "/"
+@using OpenKMS.Services
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Dashboard - OpenKMS</PageTitle>
+
+<div class="space-y-6">
+    <!-- Welcome Header -->
+    <div class="rounded-lg shadow p-6" style="background-color: #003366; color: #FFF8DC;">
+        <h1 class="text-3xl font-bold mb-2">Welcome to OpenKMS</h1>
+        <p class="text-lg" style="color: #FFF8DC; opacity: 0.9;">
+            Enterprise Knowledge Management System
+        </p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="rounded-lg shadow p-6 border-l-4" style="border-left-color: #FFD700; background-color: white;">
+            <h3 class="text-lg font-medium" style="color: #003366;">Total Trainings</h3>
+            <p class="text-3xl font-bold" style="color: #003366;">12</p>
+            <p class="text-sm" style="color: #6c757d;">Available this month</p>
+        </div>
+
+        <div class="rounded-lg shadow p-6 border-l-4" style="border-left-color: #003366; background-color: white;">
+            <h3 class="text-lg font-medium" style="color: #003366;">My Registrations</h3>
+            <p class="text-3xl font-bold" style="color: #003366;">3</p>
+            <p class="text-sm" style="color: #6c757d;">Active enrollments</p>
+        </div>
+
+        <div class="rounded-lg shadow p-6 border-l-4" style="border-left-color: #28a745; background-color: white;">
+            <h3 class="text-lg font-medium" style="color: #003366;">Completed</h3>
+            <p class="text-3xl font-bold" style="color: #28a745;">8</p>
+            <p class="text-sm" style="color: #6c757d;">Training sessions</p>
+        </div>
+
+        <div class="rounded-lg shadow p-6 border-l-4" style="border-left-color: #FFD700; background-color: white;">
+            <h3 class="text-lg font-medium" style="color: #003366;">Credits</h3>
+            <p class="text-3xl font-bold" style="color: #FFD700;">15</p>
+            <p class="text-sm" style="color: #6c757d;">Available credits</p>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Upcoming Trainings -->
+        <div class="rounded-lg shadow p-6" style="background-color: white;">
+            <h3 class="text-xl font-semibold mb-4" style="color: #003366;">Upcoming Trainings</h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-3 rounded border" style="border-color: #E6F2FF; background-color: #E6F2FF;">
+                    <div>
+                        <h4 class="font-medium" style="color: #003366;">Security Awareness</h4>
+                        <p class="text-sm" style="color: #6c757d;">Dec 15, 2023 • 10:00 AM</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-medium rounded" style="background-color: #003366; color: #FFF8DC;">Registered</span>
+                </div>
+
+                <div class="flex items-center justify-between p-3 rounded border" style="border-color: #E6F2FF; background-color: white;">
+                    <div>
+                        <h4 class="font-medium" style="color: #003366;">Project Management Fundamentals</h4>
+                        <p class="text-sm" style="color: #6c757d;">Dec 20, 2023 • 2:00 PM</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-medium rounded" style="background-color: #FFD700; color: #003366;">Available</span>
+                </div>
+
+                <div class="flex items-center justify-between p-3 rounded border" style="border-color: #E6F2FF; background-color: white;">
+                    <div>
+                        <h4 class="font-medium" style="color: #003366;">Data Privacy Best Practices</h4>
+                        <p class="text-sm" style="color: #6c757d;">Dec 22, 2023 • 11:00 AM</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-medium rounded" style="background-color: #FFD700; color: #003366;">Available</span>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button class="w-full py-2 px-4 rounded text-sm font-medium" style="background-color: #003366; color: #FFF8DC;"
+                        onclick="@(() => NavigationManager.NavigateTo("/trainings"))">
+                    View All Trainings
+                </button>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="rounded-lg shadow p-6" style="background-color: white;">
+            <h3 class="text-xl font-semibold mb-4" style="color: #003366;">Notifications</h3>
+            <div class="space-y-3">
+                <div class="flex items-start space-x-3 p-3 rounded border" style="border-color: #E6F2FF; background-color: #FFF8DC;">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: #FFD700;">
+                            <svg class="w-4 h-4" style="color: #003366;" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium" style="color: #003366;">New Training Available</h4>
+                        <p class="text-sm" style="color: #6c757d;">Leadership Development program now open for registration</p>
+                        <p class="text-xs" style="color: #6c757d;">2 hours ago</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-3 p-3 rounded border" style="border-color: #E6F2FF; background-color: white;">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: #003366; color: #FFF8DC;">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1h3z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium" style="color: #003366;">Training Reminder</h4>
+                        <p class="text-sm" style="color: #6c757d;">Security Awareness training starts in 2 days</p>
+                        <p class="text-xs" style="color: #6c757d;">1 day ago</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-3 p-3 rounded border" style="border-color: #E6F2FF; background-color: white;">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: #28a745; color: #FFF8DC;">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium" style="color: #003366;">Training Completed</h4>
+                        <p class="text-sm" style="color: #6c757d;">Congratulations! You've completed Communication Skills training</p>
+                        <p class="text-xs" style="color: #6c757d;">3 days ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="rounded-lg shadow p-6" style="background-color: white;">
+        <h3 class="text-xl font-semibold mb-4" style="color: #003366;">Quick Actions</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <button class="flex flex-col items-center justify-center p-4 rounded border-2 hover:shadow-lg transition-shadow"
+                    style="border-color: #E6F2FF; background-color: white; color: #003366;"
+                    onclick="@(() => NavigationManager.NavigateTo("/trainings"))">
+                <svg class="w-8 h-8 mb-2" style="color: #003366;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+                <span class="font-medium">Browse Trainings</span>
+            </button>
+
+            <button class="flex flex-col items-center justify-center p-4 rounded border-2 hover:shadow-lg transition-shadow"
+                    style="border-color: #E6F2FF; background-color: white; color: #003366;"
+                    onclick="@(() => NavigationManager.NavigateTo("/my-registrations"))">
+                <svg class="w-8 h-8 mb-2" style="color: #003366;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                <span class="font-medium">My Registrations</span>
+            </button>
+
+            <button class="flex flex-col items-center justify-center p-4 rounded border-2 hover:shadow-lg transition-shadow"
+                    style="border-color: #E6F2FF; background-color: white; color: #003366;"
+                    onclick="@(() => NavigationManager.NavigateTo("/calendar"))">
+                <svg class="w-8 h-8 mb-2" style="color: #003366;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="font-medium">Training Calendar</span>
+            </button>
+
+            <button class="flex flex-col items-center justify-center p-4 rounded border-2 hover:shadow-lg transition-shadow"
+                    style="border-color: #E6F2FF; background-color: white; color: #003366;"
+                    onclick="@(() => NavigationManager.NavigateTo("/admin"))">
+                <svg class="w-8 h-8 mb-2" style="color: #003366;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="font-medium">Settings</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}

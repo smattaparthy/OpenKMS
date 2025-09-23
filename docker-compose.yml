@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-bullseye
+    container_name: openkms-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: openkms
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-openkms_password}
+      POSTGRES_DB: openkms
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openkms -d openkms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - openkms-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: openkms-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - openkms-network
+
+  # Backend API (FastAPI)
+  backend:
+    build:
+      context: ./openkms-backend
+      dockerfile: Dockerfile
+    container_name: openkms-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://openkms:${POSTGRES_PASSWORD:-openkms_password}@postgres/openkms
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-here-change-in-production}
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - REFRESH_TOKEN_EXPIRE_MINUTES=10080
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-openkms_password}
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend
+    volumes:
+      - ./openkms-backend:/app
+      - openkms_logs:/app/logs
+      - openkms_uploads:/app/uploads
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - openkms-network
+
+  # Frontend (Blazor)
+  frontend:
+    build:
+      context: ./openkms-frontend
+      dockerfile: Dockerfile
+    container_name: openkms-frontend
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ApiSettings:BaseUrl=http://backend:8000
+      - ApiSettings:Version=v1
+      - ApiSettings:TimeoutSeconds=30
+    volumes:
+      - ./openkms-frontend:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - openkms-network
+
+  # Nginx Reverse Proxy (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: openkms-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - openkms-network
+    profiles:
+      - proxy
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  openkms_logs:
+    driver: local
+  openkms_uploads:
+    driver: local
+
+networks:
+  openkms-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
