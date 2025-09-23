@@ -1,22 +1,32 @@
-# Use ASP.NET 8.0 runtime for optimal performance
-FROM mcr.microsoft.com/dotnet/sdk:8.0-bullseye-slim AS build
+# Use ASP.NET 8.0 SDK for build stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copy .csproj file and restore dependencies
-COPY *.csproj ./
-RUN dotnet restore
+# Copy main project file and restore dependencies
+COPY openkms-frontend.csproj ./
+RUN dotnet restore openkms-frontend.csproj
 
-# Copy rest of the files and build the application
-COPY . .
-WORKDIR "/app"
-RUN dotnet build "OpenKMS.Frontend.csproj" -c Release -o /app/build
+# Copy only the necessary source files for the main application
+# Exclude test files and unnecessary directories
+COPY Program.cs ./
+COPY Properties/ ./Properties/
+COPY Components/ ./Components/
+COPY Services/ ./Services/
+COPY Models/ ./Models/
+COPY Handlers/ ./Handlers/
+COPY appsettings.json ./
+COPY appsettings.Development.json ./
+COPY wwwroot/ ./wwwroot/
+
+# Build the application
+RUN dotnet build "openkms-frontend.csproj" -c Release -o /app/build
 
 # Publish the application
 FROM build AS publish
-RUN dotnet publish "OpenKMS.Frontend.csproj" -c Release -o /app/publish
+RUN dotnet publish "openkms-frontend.csproj" -c Release -o /app/publish
 
-# Final stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-bullseye-slim AS final
+# Final stage - use ASP.NET runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
 # Install additional dependencies
@@ -25,9 +35,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user
-RUN useradd --create-home --shell /bin/bash app \
-    && chown -R app:app /app
+# Create non-root user (ignore if already exists)
+RUN useradd --create-home --shell /bin/bash app 2>/dev/null || true \
+    && chown -R app:app /app || true
 USER app
 
 # Copy published files
