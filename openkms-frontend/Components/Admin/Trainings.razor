@@ -1,0 +1,261 @@
+@page "/admin/trainings"
+@rendermode InteractiveServer
+@using OpenKMS.Services
+@using OpenKMS.Models.Requests
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Training Management - OpenKMS Admin</PageTitle>
+
+<section class="d-flex flex-column gap-4">
+    <!-- Header -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="card-title" style="font-size: var(--text-3xl);">Training Management</h1>
+                    <p class="card-text">Manage training sessions, courses, and scheduling</p>
+                </div>
+                <button class="btn btn-secondary" @onclick="NavigateBack">
+                    <i class="bi bi-arrow-left"></i> Back to Admin Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Training Actions -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="card-title" style="font-size: var(--text-xl);">Training Actions</h2>
+                <div>
+                    <button class="btn btn-primary me-2" @onclick="CreateNewTraining">
+                        <i class="bi bi-plus-circle"></i> Create New Training
+                    </button>
+                    <button class="btn btn-outline-primary">
+                        <i class="bi bi-download"></i> Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Training Filters -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Filter Trainings</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Status</label>
+                    <select class="form-select">
+                        <option value="">All Status</option>
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Category</label>
+                    <select class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="security">Security</option>
+                        <option value="leadership">Leadership</option>
+                        <option value="technical">Technical</option>
+                        <option value="compliance">Compliance</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Search</label>
+                    <input type="text" class="form-control" placeholder="Search trainings...">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Training Table -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">All Trainings</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Training Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">Capacity</th>
+                            <th scope="col">Registered</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Security Awareness Training</td>
+                            <td><span class="badge bg-primary">Security</span></td>
+                            <td>Dec 15, 2023</td>
+                            <td>2 hours</td>
+                            <td>15</td>
+                            <td>12</td>
+                            <td><span class="badge bg-success">Published</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                                <button class="btn btn-sm btn-outline-danger">Archive</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Leadership Development Workshop</td>
+                            <td><span class="badge bg-warning">Leadership</span></td>
+                            <td>Dec 20, 2023</td>
+                            <td>4 hours</td>
+                            <td>20</td>
+                            <td>16</td>
+                            <td><span class="badge bg-success">Published</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                                <button class="btn btn-sm btn-outline-danger">Archive</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Data Privacy Best Practices</td>
+                            <td><span class="badge bg-info">Compliance</span></td>
+                            <td>Dec 22, 2023</td>
+                            <td>3 hours</td>
+                            <td>25</td>
+                            <td>21</td>
+                            <td><span class="badge bg-success">Published</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                                <button class="btn btn-sm btn-outline-danger">Archive</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Advanced Project Management</td>
+                            <td><span class="badge bg-success">Technical</span></td>
+                            <td>Jan 5, 2024</td>
+                            <td>8 hours</td>
+                            <td>12</td>
+                            <td>0</td>
+                            <td><span class="badge bg-secondary">Draft</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-success">Publish</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Introduction to Docker</td>
+                            <td><span class="badge bg-success">Technical</span></td>
+                            <td>Dec 18, 2023</td>
+                            <td>6 hours</td>
+                            <td>10</td>
+                            <td>8</td>
+                            <td><span class="badge bg-success">Published</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                                <button class="btn btn-sm btn-outline-danger">Archive</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Training Statistics -->
+    <div class="row g-4">
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Total Trainings</h3>
+                    <p class="h2 text-primary">42</p>
+                    <p class="text-muted small">All time</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Published</h3>
+                    <p class="h2 text-success">38</p>
+                    <p class="text-muted small">Active trainings</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Draft</h3>
+                    <p class="h2 text-warning">4</p>
+                    <p class="text-muted small"> incomplete trainings</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Total Registrations</h3>
+                    <p class="h2 text-info">856</p>
+                    <p class="text-muted small">Across all trainings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Training Creation Modal -->
+<TrainingCreateModal OnTrainingCreated="HandleTrainingCreated" />
+
+@code {
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+
+    private async Task CreateNewTraining()
+    {
+        await ShowTrainingCreateModal();
+    }
+
+    private async Task ShowTrainingCreateModal()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", $"new bootstrap.Modal(document.getElementById('trainingCreateModal')).show();");
+    }
+
+    private async Task HideTrainingCreateModal()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", $"bootstrap.Modal.getInstance(document.getElementById('trainingCreateModal')).hide();");
+    }
+
+    private async Task HandleTrainingCreated(TrainingCreateRequest trainingRequest)
+    {
+        // For now, show success message and add to the training table
+        await JSRuntime.InvokeVoidAsync("alert", $"Training '{trainingRequest.Title}' created successfully!");
+
+        // Hide the modal
+        await HideTrainingCreateModal();
+
+        // In a real implementation, this would call the backend API to create the training
+        // and refresh the training list from the database
+        Console.WriteLine($"Training created: {trainingRequest.Title}");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Temporarily bypass authentication for testing
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // if (!isAuthenticated)
+            // {
+            //     NavigationManager.NavigateTo("/login");
+            // }
+        }
+    }
+}

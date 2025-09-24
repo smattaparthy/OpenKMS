@@ -31,15 +31,6 @@ builder.Services.AddHttpClient<AuthService>(client =>
 // Add AuthDelegatingHandler
 builder.Services.AddScoped<AuthDelegatingHandler>();
 
-// Add services - this creates the circular dependency issue, so we need to fix it
-builder.Services.AddScoped<AuthService>(sp =>
-{
-    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var configuration = sp.GetRequiredService<IConfiguration>();
-    var jsRuntime = sp.GetRequiredService<IJSRuntime>();
-    return new AuthService(httpClientFactory.CreateClient(), configuration, jsRuntime);
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

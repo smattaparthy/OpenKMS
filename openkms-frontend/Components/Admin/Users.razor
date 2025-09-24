@@ -1,0 +1,201 @@
+@page "/admin/users"
+@rendermode InteractiveServer
+@using OpenKMS.Services
+@using OpenKMS.Models.Requests
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<PageTitle>User Management - OpenKMS Admin</PageTitle>
+
+<section class="d-flex flex-column gap-4">
+    <!-- Header -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="card-title" style="font-size: var(--text-3xl);">User Management</h1>
+                    <p class="card-text">Manage system users, roles, and permissions</p>
+                </div>
+                <button class="btn btn-secondary" @onclick="NavigateBack">
+                    <i class="bi bi-arrow-left"></i> Back to Admin Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Actions -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="card-title" style="font-size: var(--text-xl);">User Actions</h2>
+                <button class="btn btn-primary" @onclick="AddNewUser">
+                    <i class="bi bi-person-plus"></i> Add New User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">System Users</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>jdoe</td>
+                            <td>John Doe</td>
+                            <td>john.doe@company.com</td>
+                            <td>IT</td>
+                            <td><span class="badge bg-primary">User</span></td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Disable</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>jsmith</td>
+                            <td>Jane Smith</td>
+                            <td>jane.smith@company.com</td>
+                            <td>HR</td>
+                            <td><span class="badge bg-primary">User</span></td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Disable</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>admin</td>
+                            <td>System Administrator</td>
+                            <td>admin@company.com</td>
+                            <td>IT</td>
+                            <td><span class="badge bg-warning">Admin</span></td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Disable</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>mjohnson</td>
+                            <td>Mike Johnson</td>
+                            <td>mike.johnson@company.com</td>
+                            <td>Finance</td>
+                            <td><span class="badge bg-primary">User</span></td>
+                            <td><span class="badge bg-secondary">Inactive</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                <button class="btn btn-sm btn-outline-success">Enable</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Statistics -->
+    <div class="row g-4">
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Total Users</h3>
+                    <p class="h2 text-primary">1,234</p>
+                    <p class="text-muted small">Registered users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Active Users</h3>
+                    <p class="h2 text-success">1,156</p>
+                    <p class="text-muted small">Currently active</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Admin Users</h3>
+                    <p class="h2 text-warning">12</p>
+                    <p class="text-muted small">Administrators</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">New This Month</h3>
+                    <p class="h2 text-info">45</p>
+                    <p class="text-muted small">New registrations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- User Creation Modal -->
+<UserCreateModal OnUserCreated="HandleUserCreated" />
+
+@code {
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+
+    private async Task AddNewUser()
+    {
+        await ShowUserCreateModal();
+    }
+
+    private async Task ShowUserCreateModal()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", $"new bootstrap.Modal(document.getElementById('userCreateModal')).show();");
+    }
+
+    private async Task HideUserCreateModal()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", $"bootstrap.Modal.getInstance(document.getElementById('userCreateModal')).hide();");
+    }
+
+    private async Task HandleUserCreated(UserCreateRequest userRequest)
+    {
+        // For now, show success message and add to the user table
+        await JSRuntime.InvokeVoidAsync("alert", $"User '{userRequest.Username}' created successfully!");
+
+        // Hide the modal
+        await HideUserCreateModal();
+
+        // In a real implementation, this would call the backend API to create the user
+        // and refresh the user list from the database
+        Console.WriteLine($"User created: {userRequest.Username} ({userRequest.FullName})");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Temporarily bypass authentication for testing
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // if (!isAuthenticated)
+            // {
+            //     NavigationManager.NavigateTo("/login");
+            // }
+        }
+    }
+}

@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, Integer, DateTime, Enum, ForeignKey, Boolean, Float
+from sqlalchemy import Column, Integer, String, Integer, DateTime, Enum, ForeignKey, Boolean, Float, UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
 from enum import Enum as PyEnum
+import uuid
 
 
 class AttendanceStatus(PyEnum):
@@ -18,10 +19,10 @@ class Attendance(Base):
 
     __tablename__ = "attendance"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    training_id = Column(Integer, ForeignKey("trainings.id"), nullable=False)
-    registration_id = Column(Integer, ForeignKey("registrations.id"), nullable=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    training_id = Column(UUID(as_uuid=True), ForeignKey("trainings.id"), nullable=False)
+    registration_id = Column(UUID(as_uuid=True), ForeignKey("registrations.id"), nullable=True)
 
     # Attendance details
     status = Column(Enum(AttendanceStatus), nullable=False)
@@ -30,7 +31,7 @@ class Attendance(Base):
     hours_attended = Column(Float, nullable=True)
 
     # Admin information
-    recorded_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    recorded_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     notes = Column(String(1000), nullable=True)
 
     # Credit and completion

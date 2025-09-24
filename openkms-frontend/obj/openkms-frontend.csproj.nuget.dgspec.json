@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/openkms-frontend.csproj": {}
+    "/app/openkms-frontend.csproj": {}
   },
   "projects": {
-    "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/openkms-frontend.csproj": {
+    "/app/openkms-frontend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/openkms-frontend.csproj",
+        "projectUniqueName": "/app/openkms-frontend.csproj",
         "projectName": "openkms-frontend",
-        "projectPath": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/openkms-frontend.csproj",
-        "packagesPath": "/Users/smattaparthy/.nuget/packages/",
-        "outputPath": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/",
+        "projectPath": "/app/openkms-frontend.csproj",
+        "packagesPath": "/home/app/.nuget/packages/",
+        "outputPath": "/app/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/smattaparthy/.nuget/NuGet/NuGet.Config"
+          "/home/app/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -71,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/smattaparthy/.dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

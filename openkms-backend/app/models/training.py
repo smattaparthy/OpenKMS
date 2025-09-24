@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Integer, Float, Enum, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, DateTime, Integer, Float, Enum, ForeignKey, UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
 from enum import Enum as PyEnum
+import uuid
 
 
 class TrainingCategory(PyEnum):
@@ -32,7 +33,7 @@ class Training(Base):
 
     __tablename__ = "trainings"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     title = Column(String(200), nullable=False, index=True)
     description = Column(Text, nullable=True)
     category = Column(Enum(TrainingCategory), nullable=False)
@@ -58,7 +59,7 @@ class Training(Base):
     prerequisites = Column(Text, nullable=True)
     learning_objectives = Column(Text, nullable=True)
 
-    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 

@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Enum, ForeignKey, Boolean, UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
 from enum import Enum as PyEnum
+import uuid
 
 
 class RegistrationStatus(PyEnum):
@@ -17,9 +18,9 @@ class Registration(Base):
 
     __tablename__ = "registrations"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    training_id = Column(Integer, ForeignKey("trainings.id"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    training_id = Column(UUID(as_uuid=True), ForeignKey("trainings.id"), nullable=False)
     status = Column(Enum(RegistrationStatus), default=RegistrationStatus.PENDING, nullable=False)
 
     # Registration details

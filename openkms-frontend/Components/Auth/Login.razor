@@ -1,4 +1,5 @@
 @page "/login"
+@rendermode InteractiveServer
 @using OpenKMS.Models.Requests
 @using OpenKMS.Models.Responses
 @using OpenKMS.Services
@@ -7,100 +8,96 @@
 
 <PageTitle>Login - OpenKMS</PageTitle>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50" style="background-color: #FFF8DC;">
-    <div class="max-w-md w-full space-y-8">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold" style="color: #003366;">
-                OpenKMS
-            </h2>
-            <p class="mt-2 text-center text-sm" style="color: #003366;">
-                Sign in to your account
-            </p>
-        </div>
+<section class="min-vh-100 d-flex align-items-center bg-secondary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-7 col-lg-5">
+                <div class="card shadow-md">
+                    <div class="card-header">
+                        <h2 class="m-0" style="font-size: var(--text-2xl); font-weight: var(--font-bold);">OpenKMS</h2>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-sm);">Sign in to your account</p>
+                    </div>
 
-        <EditForm Model="@loginRequest" OnValidSubmit="@HandleLogin">
-            <DataAnnotationsValidator />
-            <div class="space-y-4">
-                <div>
-                    <label for="username" class="block text-sm font-medium" style="color: #003366;">
-                        Username
-                    </label>
-                    <InputText id="username" @bind-Value="loginRequest.Username"
-                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
-                    <ValidationMessage For="@(() => loginRequest.Username)" class="text-red-500 text-sm mt-1" />
-                </div>
+                    <div class="card-body">
+                        <EditForm Model="@loginRequest" OnValidSubmit="@HandleLogin" FormName="LoginForm" aria-labelledby="login-title">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
 
-                <div>
-                    <label for="password" class="block text-sm font-medium" style="color: #003366;">
-                        Password
-                    </label>
-                    <InputText type="password" id="password" @bind-Value="loginRequest.Password"
-                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
-                    <ValidationMessage For="@(() => loginRequest.Password)" class="text-red-500 text-sm mt-1" />
-                </div>
+                            <fieldset>
+                                <legend id="login-title" class="sr-only">Login</legend>
 
-                <div class="flex items-center justify-between">
-                    <div class="text-sm">
-                        <a href="/register" class="font-medium" style="color: #003366;">
-                            Don't have an account? Sign up
-                        </a>
+                                <div class="form-group">
+                                    <label for="username" class="form-label required">Username</label>
+                                    <InputText id="username"
+                                               autocomplete="username"
+                                               @bind-Value="loginRequest.Username"
+                                               class="form-control" />
+                                    <ValidationMessage For="@(() => loginRequest.Username)" class="form-error" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password" class="form-label required">Password</label>
+                                    <InputText id="password"
+                                               type="password"
+                                               autocomplete="current-password"
+                                               @bind-Value="loginRequest.Password"
+                                               class="form-control" />
+                                    <ValidationMessage For="@(() => loginRequest.Password)" class="form-error" />
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <span class="sr-only" aria-live="polite">@statusText</span>
+                                    <a href="/register" class="text-link" style="font-size: var(--text-sm);">
+                                        Don't have an account? Sign up
+                                    </a>
+                                </div>
+
+                                <button type="submit"
+                                        class="btn btn-primary btn-block"
+                                        disabled="@isLoading"
+                                        aria-busy="@isLoading"
+                                        aria-live="polite">
+                                    @if (isLoading)
+                                    {
+                                        <span class="spinner spinner-sm me-2" aria-hidden="true"></span>
+                                    }
+                                    <span>@(isLoading ? "Signing in..." : "Sign in")</span>
+                                </button>
+                            </fieldset>
+                        </EditForm>
+
+                        @if (showError)
+                        {
+                            <div class="alert alert-error mt-3" role="alert">
+                                <p class="alert-text m-0">
+                                    <strong>Error: </strong>@errorMessage
+                                </p>
+                            </div>
+                        }
                     </div>
                 </div>
 
-                <div>
-                    <button type="submit" disabled="@isLoading"
-                            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            style="background-color: #003366;">
-                        @if (isLoading)
-                        {
-                            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                            </span>
-                        }
-                        @(!isLoading ? "Sign in" : "Signing in...")
-                    </button>
-                </div>
+                <p class="text-center text-secondary mt-3" style="font-size: var(--text-sm);">
+                    © @DateTime.UtcNow.Year OpenKMS
+                </p>
             </div>
-        </EditForm>
-
-        @if (showError)
-        {
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <span class="block sm:inline">@errorMessage</span>
-            </div>
-        }
+        </div>
     </div>
-</div>
-
-<style>
-    input:focus {
-        border-color: #003366 !important;
-        box-shadow: 0 0 0 1px #003366 !important;
-    }
-
-    button:hover {
-        background-color: #002244 !important;
-    }
-
-    button:disabled {
-        background-color: #6c757d !important;
-        cursor: not-allowed;
-    }
-</style>
+</section>
 
 @code {
     private UserLoginRequest loginRequest = new();
     private bool isLoading = false;
     private bool showError = false;
     private string errorMessage = string.Empty;
+    private string statusText => isLoading ? "Signing in..." : string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await AuthService.InitializeAuthAsync();
+        if (firstRender)
+        {
+            await AuthService.InitializeAuthAsync();
+        }
     }
 
     private async Task HandleLogin()

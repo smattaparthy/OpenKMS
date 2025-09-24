@@ -1,0 +1,232 @@
+@page "/calendar"
+@rendermode InteractiveServer
+@using OpenKMS.Services
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Training Calendar - OpenKMS</PageTitle>
+
+<section class="d-flex flex-column gap-4">
+    <!-- Header -->
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title" style="font-size: var(--text-3xl);">Training Calendar</h1>
+            <p class="card-text">View and manage upcoming training sessions</p>
+        </div>
+    </div>
+
+    <!-- Calendar Controls -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-secondary" @onclick="NavigateToPreviousMonth">
+                    ← Previous
+                </button>
+                <h2 class="m-0" style="font-size: var(--text-xl);">@currentMonth.ToString("MMMM yyyy")</h2>
+                <button class="btn btn-secondary" @onclick="NavigateToNextMonth">
+                    Next →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sunday</th>
+                            <th scope="col">Monday</th>
+                            <th scope="col">Tuesday</th>
+                            <th scope="col">Wednesday</th>
+                            <th scope="col">Thursday</th>
+                            <th scope="col">Friday</th>
+                            <th scope="col">Saturday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int week = 0; week < 6; week++)
+                        {
+                            <tr>
+                                @for (int day = 0; day < 7; day++)
+                                {
+                                    var currentDate = GetCalendarDate(week, day);
+                                    var hasTraining = HasTrainingOnDate(currentDate);
+                                    var isCurrentMonth = currentDate.Month == currentMonth.Month;
+
+                                    <td class="text-center @(isCurrentMonth ? "" : "text-muted")">
+                                        @if (isCurrentMonth)
+                                        {
+                                            <div class="p-2 @(hasTraining ? "bg-primary text-white" : "")">
+                                                <div>@currentDate.Day</div>
+                                                @if (hasTraining)
+                                                {
+                                                    <small>
+                                                        <i class="bi bi-calendar-event"></i>
+                                                        <span>@GetTrainingCount(currentDate)</span>
+                                                    </small>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="p-2">
+                                                <div>@currentDate.Day</div>
+                                            </div>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Trainings -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Upcoming Trainings</h2>
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex align-items-start gap-3 p-3 rounded" style="border: 1px solid var(--border-light); background-color: var(--bg-accent);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 2rem; height: 2rem; background-color: #007bff;">
+                        <span aria-hidden="true">📚</span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="m-0" style="font-size: var(--text-base); font-weight: var(--font-medium);">Security Awareness Training</h3>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-sm);">
+                            📅 @DateTime.Now.AddDays(2).ToString("MMMM d, yyyy") at 2:00 PM
+                        </p>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-xs);">
+                            📍 Conference Room A
+                        </p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" @onclick="ViewSecurityTraining">
+                        View Details
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-start gap-3 p-3 rounded" style="border: 1px solid var(--border-light); background-color: var(--bg-primary);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 2rem; height: 2rem; background-color: var(--color-success);">
+                        <span aria-hidden="true">💻</span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="m-0" style="font-size: var(--text-base); font-weight: var(--font-medium);">Introduction to Docker</h3>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-sm);">
+                            📅 @DateTime.Now.AddDays(5).ToString("MMMM d, yyyy") at 10:00 AM
+                        </p>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-xs);">
+                            📍 Training Lab
+                        </p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" @onclick="ViewDockerTraining">
+                        View Details
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-start gap-3 p-3 rounded" style="border: 1px solid var(--border-light); background-color: var(--bg-accent);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 2rem; height: 2rem; background-color: #FFD700;">
+                        <span aria-hidden="true">🔒</span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="m-0" style="font-size: var(--text-base); font-weight: var(--font-medium);">Advanced Cybersecurity</h3>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-sm);">
+                            📅 @DateTime.Now.AddDays(10).ToString("MMMM d, yyyy") at 1:00 PM
+                        </p>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-xs);">
+                            📍 Virtual Classroom
+                        </p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" @onclick="ViewAdvancedTraining">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card">
+        <div class="card-body">
+            <button class="btn btn-primary" @onclick="NavigateToDashboard">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </button>
+        </div>
+    </div>
+</section>
+
+@code {
+    private DateTime currentMonth = DateTime.Now;
+
+    private void NavigateToPreviousMonth()
+    {
+        currentMonth = currentMonth.AddMonths(-1);
+    }
+
+    private void NavigateToNextMonth()
+    {
+        currentMonth = currentMonth.AddMonths(1);
+    }
+
+    private DateTime GetCalendarDate(int week, int day)
+    {
+        var firstDayOfMonth = new DateTime(currentMonth.Year, currentMonth.Month, 1);
+        var firstDayOfWeek = firstDayOfMonth.DayOfWeek;
+        var startDate = firstDayOfMonth.AddDays(-(int)firstDayOfWeek);
+        return startDate.AddDays(week * 7 + day);
+    }
+
+    private bool HasTrainingOnDate(DateTime date)
+    {
+        // Sample logic - in a real app, this would check against actual training data
+        return date.Day == @DateTime.Now.AddDays(2).Day ||
+               date.Day == @DateTime.Now.AddDays(5).Day ||
+               date.Day == @DateTime.Now.AddDays(10).Day;
+    }
+
+    private int GetTrainingCount(DateTime date)
+    {
+        return HasTrainingOnDate(date) ? 1 : 0;
+    }
+
+    private void ViewTrainingDetails(string trainingId)
+    {
+        NavigationManager.NavigateTo($"/trainings/{trainingId}");
+    }
+
+    private void ViewSecurityTraining()
+    {
+        ViewTrainingDetails("security-awareness");
+    }
+
+    private void ViewDockerTraining()
+    {
+        ViewTrainingDetails("docker-intro");
+    }
+
+    private void ViewAdvancedTraining()
+    {
+        ViewTrainingDetails("advanced-cybersecurity");
+    }
+
+    private void NavigateToDashboard()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Temporarily bypass authentication for testing
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // if (!isAuthenticated)
+            // {
+            //     NavigationManager.NavigateTo("/login");
+            // }
+        }
+    }
+}

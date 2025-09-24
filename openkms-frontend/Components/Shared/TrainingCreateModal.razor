@@ -1,0 +1,230 @@
+@using OpenKMS.Models.Requests
+@using System.ComponentModel.DataAnnotations
+
+<div class="modal fade" id="trainingCreateModal" tabindex="-1" aria-labelledby="trainingCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="trainingCreateModalLabel">Create New Training</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@TrainingRequest" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <div class="row g-3">
+                        <!-- Basic Information -->
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">Basic Information</h6>
+                        </div>
+
+                        <div class="col-12 col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">Training Title *</label>
+                                <InputText class="form-control" @bind-Value="TrainingRequest.Title" placeholder="Enter training title" />
+                                <ValidationMessage For="@(() => TrainingRequest.Title)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Category *</label>
+                                <InputSelect class="form-select" @bind-Value="TrainingRequest.Category">
+                                    <option value="">Select category</option>
+                                    @foreach (var category in Enum.GetValues<TrainingCategory>())
+                                    {
+                                        <option value="@category">@category</option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => TrainingRequest.Category)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <InputTextArea class="form-control" @bind-Value="TrainingRequest.Description" rows="3" placeholder="Enter training description" />
+                                <ValidationMessage For="@(() => TrainingRequest.Description)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Level *</label>
+                                <InputSelect class="form-select" @bind-Value="TrainingRequest.Level">
+                                    @foreach (var level in Enum.GetValues<TrainingLevel>())
+                                    {
+                                        <option value="@level">@level</option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => TrainingRequest.Level)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Location *</label>
+                                <InputText class="form-control" @bind-Value="TrainingRequest.Location" placeholder="Enter training location" />
+                                <ValidationMessage For="@(() => TrainingRequest.Location)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <!-- Schedule Information -->
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3 mt-4">Schedule Information</h6>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Start Date *</label>
+                                <InputDate class="form-control" @bind-Value="TrainingRequest.StartDate" />
+                                <ValidationMessage For="@(() => TrainingRequest.StartDate)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">End Date *</label>
+                                <InputDate class="form-control" @bind-Value="TrainingRequest.EndDate" />
+                                <ValidationMessage For="@(() => TrainingRequest.EndDate)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Duration (hours) *</label>
+                                <InputNumber class="form-control" @bind-Value="TrainingRequest.DurationHours" />
+                                <ValidationMessage For="@(() => TrainingRequest.DurationHours)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Maximum Participants *</label>
+                                <InputNumber class="form-control" @bind-Value="TrainingRequest.MaxParticipants" />
+                                <ValidationMessage For="@(() => TrainingRequest.MaxParticipants)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <!-- Additional Details -->
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3 mt-4">Additional Details</h6>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Credits Required *</label>
+                                <InputNumber class="form-control" @bind-Value="TrainingRequest.CreditsRequired" />
+                                <ValidationMessage For="@(() => TrainingRequest.CreditsRequired)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Cost ($)</label>
+                                <InputNumber class="form-control" @bind-Value="TrainingRequest.Cost" />
+                                <ValidationMessage For="@(() => TrainingRequest.Cost)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Instructor</label>
+                                <InputText class="form-control" @bind-Value="TrainingRequest.Instructor" placeholder="Enter instructor name" />
+                                <ValidationMessage For="@(() => TrainingRequest.Instructor)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Prerequisites</label>
+                                <InputTextArea class="form-control" @bind-Value="TrainingRequest.Prerequisites" rows="2" placeholder="Enter prerequisites" />
+                                <ValidationMessage For="@(() => TrainingRequest.Prerequisites)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Learning Objectives</label>
+                                <InputTextArea class="form-control" @bind-Value="TrainingRequest.LearningObjectives" rows="3" placeholder="Enter learning objectives" />
+                                <ValidationMessage For="@(() => TrainingRequest.LearningObjectives)" class="text-danger small" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" disabled="@IsSubmitting">
+                            @(IsSubmitting ? "Creating..." : "Create Training")
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<TrainingCreateRequest> OnTrainingCreated { get; set; }
+
+    private TrainingCreateRequest TrainingRequest { get; set; } = new();
+    private bool IsSubmitting { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        InitializeDefaults();
+    }
+
+    private void InitializeDefaults()
+    {
+        TrainingRequest = new TrainingCreateRequest
+        {
+            Title = "",
+            Description = "",
+            Category = TrainingCategory.TECHNICAL,
+            Level = TrainingLevel.BEGINNER,
+            Location = "",
+            StartDate = DateTime.Today.AddDays(7),
+            EndDate = DateTime.Today.AddDays(7).AddHours(1),
+            DurationHours = 1.0f,
+            MaxParticipants = 30,
+            CreditsRequired = 1,
+            Cost = 0.0f,
+            Instructor = "",
+            Prerequisites = "",
+            LearningObjectives = ""
+        };
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        IsSubmitting = true;
+
+        try
+        {
+            // Emit the created training request to parent component
+            await OnTrainingCreated.InvokeAsync(TrainingRequest);
+
+            // Reset form
+            InitializeDefaults();
+
+            // Close modal (will be handled by parent)
+        }
+        finally
+        {
+            IsSubmitting = false;
+        }
+    }
+
+    public void ShowModal()
+    {
+        // This method will be called by parent to show the modal
+        // Using JavaScript interop to show Bootstrap modal
+    }
+
+    public void HideModal()
+    {
+        // This method will be called by parent to hide the modal
+        // Using JavaScript interop to hide Bootstrap modal
+    }
+}

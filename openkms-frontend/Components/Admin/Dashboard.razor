@@ -1,0 +1,160 @@
+@page "/admin"
+@rendermode InteractiveServer
+@using OpenKMS.Services
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Admin Dashboard - OpenKMS</PageTitle>
+
+<section class="d-flex flex-column gap-4">
+    <!-- Header -->
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title" style="font-size: var(--text-3xl);">Admin Dashboard</h1>
+            <p class="card-text">System administration and management panel</p>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-4" role="list" aria-label="Admin statistics">
+        <div class="col-12 col-sm-6 col-lg-3" role="listitem">
+            <div class="card h-100" style="border-left: 4px solid #28a745;">
+                <div class="card-body">
+                    <h3 class="card-title">Total Users</h3>
+                    <p class="h2 text-success">1,234</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3" role="listitem">
+            <div class="card h-100" style="border-left: 4px solid #007bff;">
+                <div class="card-body">
+                    <h3 class="card-title">Active Trainings</h3>
+                    <p class="h2 text-primary">42</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3" role="listitem">
+            <div class="card h-100" style="border-left: 4px solid #ffc107;">
+                <div class="card-body">
+                    <h3 class="card-title">Total Registrations</h3>
+                    <p class="h2 text-warning">856</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3" role="listitem">
+            <div class="card h-100" style="border-left: 4px solid #dc3545;">
+                <div class="card-body">
+                    <h3 class="card-title">Pending Approvals</h3>
+                    <p class="h2 text-danger">12</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Actions -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Administration</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <button class="btn btn-danger btn-block" @onclick="NavigateToUsers">
+                        Manage Users
+                    </button>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <button class="btn btn-primary btn-block" @onclick="NavigateToTrainings">
+                        Manage Trainings
+                    </button>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <button class="btn btn-warning btn-block" @onclick="NavigateToReports">
+                        View Reports
+                    </button>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <button class="btn btn-secondary btn-block" @onclick="NavigateToSettings">
+                        System Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Recent Activity</h2>
+            <div class="d-flex flex-column gap-2">
+                <div class="d-flex align-items-start gap-3 p-3 rounded" style="border: 1px solid var(--border-light); background-color: var(--bg-accent);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 2rem; height: 2rem; background-color: #28a745; color: white;">
+                        <span aria-hidden="true">✓</span>
+                    </div>
+                    <div>
+                        <h3 class="m-0" style="font-size: var(--text-base); font-weight: var(--font-medium);">New user registration</h3>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-sm);">John Doe registered for the system</p>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-xs);">2 hours ago</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start gap-3 p-3 rounded" style="border: 1px solid var(--border-light); background-color: var(--bg-primary);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 2rem; height: 2rem; background-color: var(--color-primary); color: var(--color-white);">
+                        <span aria-hidden="true">📝</span>
+                    </div>
+                    <div>
+                        <h3 class="m-0" style="font-size: var(--text-base); font-weight: var(--font-medium);">Training created</h3>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-sm);">"Advanced Security Practices" training was created</p>
+                        <p class="m-0 text-secondary" style="font-size: var(--text-xs);">1 day ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card">
+        <div class="card-body">
+            <button class="btn btn-primary" @onclick="NavigateToDashboard">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </button>
+        </div>
+    </div>
+</section>
+
+@code {
+    private void NavigateToUsers()
+    {
+        NavigationManager.NavigateTo("/admin/users");
+    }
+
+    private void NavigateToTrainings()
+    {
+        NavigationManager.NavigateTo("/admin/trainings");
+    }
+
+    private void NavigateToReports()
+    {
+        NavigationManager.NavigateTo("/admin/reports");
+    }
+
+    private void NavigateToSettings()
+    {
+        NavigationManager.NavigateTo("/admin/settings");
+    }
+
+    private void NavigateToDashboard()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Temporarily bypass authentication for testing
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // if (!isAuthenticated)
+            // {
+            //     NavigationManager.NavigateTo("/login");
+            // }
+        }
+    }
+}

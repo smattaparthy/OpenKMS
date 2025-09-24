@@ -9,67 +9,107 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = openkms-frontend
 build_property.RootNamespace = openkms-frontend
-build_property.ProjectDir = /Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/
+build_property.ProjectDir = /app/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend
+build_property.MSBuildProjectDirectory = /app
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/App.razor]
+[/app/Components/Admin/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BZG1pbi9EYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Admin/Reports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BZG1pbi9SZXBvcnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Admin/Settings.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BZG1pbi9TZXR0aW5ncy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Admin/Trainings.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BZG1pbi9UcmFpbmluZ3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Admin/Users.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BZG1pbi9Vc2Vycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Auth/Login.razor]
+[/app/Components/Auth/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BdXRoL0xvZ2luLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Auth/Register.razor]
+[/app/Components/Auth/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BdXRoL1JlZ2lzdGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Dashboard.razor]
+[/app/Components/Dashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9EYXNoYm9hcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Pages/Counter.razor]
+[/app/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Db3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Pages/Error.razor]
+[/app/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Pages/Home.razor]
+[/app/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Pages/Weather.razor]
+[/app/Components/Pages/Test.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9UZXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9XZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Routes.razor]
+[/app/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Training/MyRegistrations.razor]
+[/app/Components/Shared/TrainingCreateModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvVHJhaW5pbmdDcmVhdGVNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Shared/UserCreateModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvVXNlckNyZWF0ZU1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Training/Calendar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9UcmFpbmluZy9DYWxlbmRhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Training/MyRegistrations.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9UcmFpbmluZy9NeVJlZ2lzdHJhdGlvbnMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Training/TrainingList.razor]
+[/app/Components/Training/TrainingDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9UcmFpbmluZy9UcmFpbmluZ0RldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Components/Training/TrainingList.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9UcmFpbmluZy9UcmFpbmluZ0xpc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/_Imports.razor]
+[/app/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9fSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Layout/MainLayout.razor]
+[/app/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-1lj15dwkgv
 
-[/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/Components/Layout/NavMenu.razor]
+[/app/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-1fhzg0kb7k

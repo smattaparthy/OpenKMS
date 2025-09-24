@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: openkms
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-openkms_password}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: openkms
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -49,7 +49,7 @@ services:
     container_name: openkms-backend
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://openkms:${POSTGRES_PASSWORD:-openkms_password}@postgres/openkms
+      - DATABASE_URL=postgresql+asyncpg://openkms:${POSTGRES_PASSWORD:-openkms_password}@postgres/openkms
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-here-change-in-production}
       - ALGORITHM=HS256
@@ -69,7 +69,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -90,7 +90,15 @@ services:
       - ApiSettings:Version=v1
       - ApiSettings:TimeoutSeconds=30
     volumes:
-      - ./openkms-frontend:/app
+      - ./openkms-frontend/Program.cs:/app/Program.cs
+      - ./openkms-frontend/appsettings.json:/app/appsettings.json
+      - ./openkms-frontend/openkms-frontend.csproj:/app/openkms-frontend.csproj
+      - ./openkms-frontend/Properties:/app/Properties
+      - ./openkms-frontend/Components:/app/Components
+      - ./openkms-frontend/Services:/app/Services
+      - ./openkms-frontend/Models:/app/Models
+      - ./openkms-frontend/Handlers:/app/Handlers
+      - ./openkms-frontend/wwwroot:/app/wwwroot
     ports:
       - "8080:8080"
     depends_on:

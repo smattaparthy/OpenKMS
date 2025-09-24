@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -81,7 +82,8 @@ namespace OpenKMS.Handlers
             // Copy content
             if (request.Content != null)
             {
-                clone.Content = await request.Content.ReadAsStreamAsync();
+                var stream = await request.Content.ReadAsStreamAsync();
+                clone.Content = new StreamContent(stream);
                 clone.Content.Headers.ContentType = request.Content.Headers.ContentType;
             }
 

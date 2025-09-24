@@ -1,0 +1,204 @@
+@using OpenKMS.Models.Requests
+@using System.ComponentModel.DataAnnotations
+
+<div class="modal fade" id="userCreateModal" tabindex="-1" aria-labelledby="userCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userCreateModalLabel">Create New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@UserRequest" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <div class="row g-3">
+                        <!-- Basic Information -->
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3">Basic Information</h6>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Username *</label>
+                                <InputText class="form-control" @bind-Value="UserRequest.Username" placeholder="Enter username" />
+                                <ValidationMessage For="@(() => UserRequest.Username)" class="text-danger small" />
+                                <small class="form-text text-muted">Only letters, numbers, and underscores allowed</small>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Full Name *</label>
+                                <InputText class="form-control" @bind-Value="UserRequest.FullName" placeholder="Enter full name" />
+                                <ValidationMessage For="@(() => UserRequest.FullName)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Email *</label>
+                                <InputText class="form-control" @bind-Value="UserRequest.Email" placeholder="Enter email address" />
+                                <ValidationMessage For="@(() => UserRequest.Email)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Role *</label>
+                                <InputSelect class="form-select" @bind-Value="UserRequest.Role">
+                                    @foreach (var role in Enum.GetValues<UserRole>())
+                                    {
+                                        <option value="@role">@role</option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => UserRequest.Role)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <!-- Password Information -->
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3 mt-4">Password & Security</h6>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Password *</label>
+                                <div class="input-group">
+                                    <InputText type="password" class="form-control" @bind-Value="UserRequest.Password" placeholder="Enter password" />
+                                    <button class="btn btn-outline-secondary" type="button" @onclick="TogglePasswordVisibility" title="Toggle password visibility">
+                                        <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye")"></i>
+                                    </button>
+                                </div>
+                                <ValidationMessage For="@(() => UserRequest.Password)" class="text-danger small" />
+                                <small class="form-text text-muted">Must contain uppercase, lowercase, number, and special character</small>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Confirm Password *</label>
+                                <InputText type="password" class="form-control" @bind-Value="UserRequest.ConfirmPassword" placeholder="Confirm password" />
+                                <ValidationMessage For="@(() => UserRequest.ConfirmPassword)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <!-- Additional Details -->
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3 mt-4">Additional Details</h6>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Department</label>
+                                <InputText class="form-control" @bind-Value="UserRequest.Department" placeholder="Enter department" />
+                                <ValidationMessage For="@(() => UserRequest.Department)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Office Location</label>
+                                <InputText class="form-control" @bind-Value="UserRequest.OfficeLocation" placeholder="Enter office location" />
+                                <ValidationMessage For="@(() => UserRequest.OfficeLocation)" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Account Status *</label>
+                                <div class="form-check">
+                                    <InputCheckbox class="form-check-input" id="isActiveCheckbox" @bind-Value="UserRequest.IsActive" />
+                                    <label class="form-check-label" for="isActiveCheckbox">
+                                        Active Account
+                                    </label>
+                                </div>
+                                <ValidationMessage For="@(() => UserRequest.IsActive)" class="text-danger small" />
+                                <small class="form-text text-muted">Uncheck to create a disabled account</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" disabled="@IsSubmitting">
+                            @(IsSubmitting ? "Creating User..." : "Create User")
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<UserCreateRequest> OnUserCreated { get; set; }
+
+    private UserCreateRequest UserRequest { get; set; } = new();
+    private bool IsSubmitting { get; set; } = false;
+    private bool showPassword { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        InitializeDefaults();
+    }
+
+    private void InitializeDefaults()
+    {
+        UserRequest = new UserCreateRequest
+        {
+            Username = "",
+            Email = "",
+            FullName = "",
+            Password = "",
+            ConfirmPassword = "",
+            Role = UserRole.EMPLOYEE,
+            Department = "",
+            OfficeLocation = "",
+            IsActive = true
+        };
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        IsSubmitting = true;
+
+        try
+        {
+            // Emit the created user request to parent component
+            await OnUserCreated.InvokeAsync(UserRequest);
+
+            // Reset form
+            InitializeDefaults();
+
+            // Close modal (will be handled by parent)
+        }
+        finally
+        {
+            IsSubmitting = false;
+        }
+    }
+
+    public void ShowModal()
+    {
+        // This method will be called by parent to show the modal
+        // Using JavaScript interop to show Bootstrap modal
+    }
+
+    public void HideModal()
+    {
+        // This method will be called by parent to hide the modal
+        // Using JavaScript interop to hide Bootstrap modal
+    }
+
+    public void SetPasswordInputType()
+    {
+        // This method will handle password field type switching
+        // Implementation depends on how we want to handle the password visibility toggle
+    }
+}

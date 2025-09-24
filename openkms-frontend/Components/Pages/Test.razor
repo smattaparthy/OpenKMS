@@ -1,0 +1,19 @@
+@page "/test"
+@rendermode InteractiveServer
+
+<h3>Button Test Page</h3>
+<button class="btn btn-primary" @onclick="TestClick">Test Click</button>
+
+@if (clicked)
+{
+    <p class="text-success">Button was clicked successfully!</p>
+}
+
+@code {
+    private bool clicked = false;
+
+    private void TestClick()
+    {
+        clicked = true;
+    }
+}

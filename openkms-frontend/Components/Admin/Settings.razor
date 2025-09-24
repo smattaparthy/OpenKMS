@@ -1,0 +1,250 @@
+@page "/admin/settings"
+@rendermode InteractiveServer
+@using OpenKMS.Services
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>System Settings - OpenKMS Admin</PageTitle>
+
+<section class="d-flex flex-column gap-4">
+    <!-- Header -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="card-title" style="font-size: var(--text-3xl);">System Settings</h1>
+                    <p class="card-text">Configure system parameters, integrations, and platform settings</p>
+                </div>
+                <button class="btn btn-secondary" @onclick="NavigateBack">
+                    <i class="bi bi-arrow-left"></i> Back to Admin Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Categories -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Settings Categories</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-3">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-gear-fill text-primary" style="font-size: 2rem;"></i>
+                            <h3 class="card-title mt-2">General</h3>
+                            <p class="card-text small">Basic system configuration</p>
+                            <button class="btn btn-sm btn-outline-primary mt-2">Configure</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-shield-fill-check text-success" style="font-size: 2rem;"></i>
+                            <h3 class="card-title mt-2">Security</h3>
+                            <p class="card-text small">Security policies and access</p>
+                            <button class="btn btn-sm btn-outline-success mt-2">Configure</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-envelope-fill text-info" style="font-size: 2rem;"></i>
+                            <h3 class="card-title mt-2">Email</h3>
+                            <p class="card-text small">Email configuration</p>
+                            <button class="btn btn-sm btn-outline-info mt-2">Configure</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-bell-fill text-warning" style="font-size: 2rem;"></i>
+                            <h3 class="card-title mt-2">Notifications</h3>
+                            <p class="card-text small">Alert and notification settings</p>
+                            <button class="btn btn-sm btn-outline-warning mt-2">Configure</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- General Settings -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">General Settings</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">System Name</label>
+                        <input type="text" class="form-control" value="OpenKMS" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">System Description</label>
+                        <textarea class="form-control" rows="3">Enterprise Knowledge Management System</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Default Language</label>
+                        <select class="form-select">
+                            <option value="en" selected>English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Timezone</label>
+                        <select class="form-select">
+                            <option value="UTC" selected>UTC</option>
+                            <option value="EST">Eastern Time</option>
+                            <option value="CST">Central Time</option>
+                            <option value="MST">Mountain Time</option>
+                            <option value="PST">Pacific Time</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Date Format</label>
+                        <select class="form-select">
+                            <option value="MM/DD/YYYY" selected>MM/DD/YYYY</option>
+                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-switch">
+                            <input type="checkbox" class="form-check-input" checked />
+                            Enable System Maintenance Mode
+                        </label>
+                        <small class="form-text text-muted">When enabled, only administrators can access the system</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Security Settings</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Password Policy</label>
+                        <select class="form-select">
+                            <option value="standard">Standard (8 characters)</option>
+                            <option value="strong" selected>Strong (12+ characters, special chars)</option>
+                            <option value="custom">Custom Policy</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Session Timeout (minutes)</label>
+                        <input type="number" class="form-control" value="30" min="5" max="480" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-switch">
+                            <input type="checkbox" class="form-check-input" checked />
+                            Enable Two-Factor Authentication
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Maximum Login Attempts</label>
+                        <input type="number" class="form-control" value="5" min="3" max="10" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-switch">
+                            <input type="checkbox" class="form-check-input" checked />
+                            Enable Account Lockout
+                        </label>
+                        <small class="form-text text-muted">Lock accounts after maximum failed attempts</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-switch">
+                            <input type="checkbox" class="form-check-input" />
+                            Require Email Verification
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Settings -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Email Configuration</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">SMTP Server</label>
+                        <input type="text" class="form-control" value="smtp.company.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">SMTP Port</label>
+                        <input type="number" class="form-control" value="587" min="1" max="65535" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" value="noreply@company.com" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" value="********" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">From Email</label>
+                        <input type="email" class="form-control" value="noreply@company.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-switch">
+                            <input type="checkbox" class="form-check-input" checked />
+                            Enable SSL/TLS
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Settings -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted mb-0">Last updated: December 1, 2023 at 2:45 PM</p>
+                </div>
+                <div>
+                    <button class="btn btn-secondary me-2">Reset to Defaults</button>
+                    <button class="btn btn-primary">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Temporarily bypass authentication for testing
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // if (!isAuthenticated)
+            // {
+            //     NavigationManager.NavigateTo("/login");
+            // }
+        }
+    }
+}

@@ -18,8 +18,6 @@ services:
       - ~/.nuget/packages:/root/.nuget/packages:ro
 
   postgres:
-    environment:
-      - POSTGRES_PASSWORD=dev_password
     ports:
       - "5432:5432"
 

@@ -1,0 +1,328 @@
+@page "/trainings/{trainingId}"
+@rendermode InteractiveServer
+@using OpenKMS.Services
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Training Details - OpenKMS</PageTitle>
+
+<section class="d-flex flex-column gap-4">
+    <!-- Header -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="card-title" style="font-size: var(--text-3xl);">@trainingTitle</h1>
+                    <p class="card-text">@trainingDescription</p>
+                </div>
+                <button class="btn btn-secondary" @onclick="NavigateBack">
+                    <i class="bi bi-arrow-left"></i> Back to Trainings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Training Details -->
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-4">
+                <div class="col-12 col-md-8">
+                    <h2 class="card-title" style="font-size: var(--text-xl);">Course Overview</h2>
+                    <p class="card-text">
+                        @trainingOverview
+                    </p>
+
+                    <h3 class="card-title mt-4" style="font-size: var(--text-lg);">What You'll Learn</h3>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var learningPoint in learningPoints)
+                        {
+                            <li class="list-group-item border-0 ps-0">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                @learningPoint
+                            </li>
+                        }
+                    </ul>
+
+                    <h3 class="card-title mt-4" style="font-size: var(--text-lg);">Prerequisites</h3>
+                    <p class="card-text">
+                        @prerequisites
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title" style="font-size: var(--text-lg);">Training Details</h3>
+
+                            <div class="d-flex flex-column gap-3">
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2" aria-hidden="true">🗓️</span>
+                                    <div>
+                                        <small class="text-muted d-block">Date & Time</small>
+                                        <span class="fw-medium">@trainingDateTime</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2" aria-hidden="true">📍</span>
+                                    <div>
+                                        <small class="text-muted d-block">Location</small>
+                                        <span class="fw-medium">@trainingLocation</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2" aria-hidden="true">⏱️</span>
+                                    <div>
+                                        <small class="text-muted d-block">Duration</small>
+                                        <span class="fw-medium">@trainingDuration</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2" aria-hidden="true">🎯</span>
+                                    <div>
+                                        <small class="text-muted d-block">Credits</small>
+                                        <span class="fw-medium">@trainingCredits</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2" aria-hidden="true">👥</span>
+                                    <div>
+                                        <small class="text-muted d-block">Available Spots</small>
+                                        <span class="fw-medium">@availableSpots spots available</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-3">
+
+                            <div class="d-grid gap-2">
+                                @if (isRegistrationOpen)
+                                {
+                                    <button class="btn btn-primary" @onclick="RegisterForTraining">
+                                        Register Now
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-secondary" disabled>
+                                        Registration Closed
+                                    </button>
+                                }
+
+                                <button class="btn btn-outline-primary" @onclick="AddToCalendar">
+                                    <i class="bi bi-calendar-plus"></i> Add to Calendar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Trainings -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Related Trainings</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title" style="font-size: var(--text-base);">Advanced Security Practices</h3>
+                            <p class="card-text small">Deep dive into advanced security concepts and implementation strategies.</p>
+                            <a href="/trainings/advanced-security" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title" style="font-size: var(--text-base);">Compliance Framework Overview</h3>
+                            <p class="card-text small">Understanding compliance requirements and framework implementation.</p>
+                            <a href="/trainings/compliance-framework" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public string? TrainingId { get; set; }
+
+    private string trainingTitle = "";
+    private string trainingDescription = "";
+    private string trainingOverview = "";
+    private string prerequisites = "";
+    private string trainingDateTime = "";
+    private string trainingLocation = "";
+    private string trainingDuration = "";
+    private string trainingCredits = "";
+    private int availableSpots = 0;
+    private bool isRegistrationOpen = false;
+    private List<string> learningPoints = new();
+
+    protected override void OnParametersSet()
+    {
+        LoadTrainingData();
+    }
+
+    private void LoadTrainingData()
+    {
+        switch (TrainingId?.ToLower())
+        {
+            case "security-awareness":
+                trainingTitle = "Security Awareness Training";
+                trainingDescription = "Comprehensive security awareness covering data protection, threat identification, and best practices.";
+                trainingOverview = "This comprehensive training program covers essential security awareness topics including data protection, threat identification, cybersecurity best practices, and incident response procedures. Participants will learn to recognize potential security threats and implement appropriate protective measures.";
+                learningPoints = new List<string>
+                {
+                    "Identify common cybersecurity threats and attack vectors",
+                    "Implement data protection best practices",
+                    "Recognize social engineering attempts",
+                    "Understand incident response procedures",
+                    "Apply security principles in daily work activities"
+                };
+                prerequisites = "No prerequisites required. Suitable for all employees.";
+                trainingDateTime = "Dec 15, 2023 • 10:00 AM";
+                trainingLocation = "Conference Room A";
+                trainingDuration = "2 hours";
+                trainingCredits = "1 credit";
+                availableSpots = 12;
+                isRegistrationOpen = true;
+                break;
+
+            case "leadership-development":
+                trainingTitle = "Leadership Development Workshop";
+                trainingDescription = "Enhance your leadership skills with practical strategies for team management and decision making.";
+                trainingOverview = "This interactive workshop focuses on developing essential leadership skills including effective communication, team management, strategic decision-making, and conflict resolution. Participants will engage in practical exercises and case studies.";
+                learningPoints = new List<string>
+                {
+                    "Develop effective communication strategies",
+                    "Master team management and motivation techniques",
+                    "Improve strategic decision-making abilities",
+                    "Learn conflict resolution approaches",
+                    "Build emotional intelligence and leadership presence"
+                };
+                prerequisites = "Prior management experience recommended but not required.";
+                trainingDateTime = "Dec 20, 2023 • 2:00 PM";
+                trainingLocation = "Training Room B";
+                trainingDuration = "4 hours";
+                trainingCredits = "2 credits";
+                availableSpots = 8;
+                isRegistrationOpen = true;
+                break;
+
+            case "data-privacy":
+                trainingTitle = "Data Privacy Best Practices";
+                trainingDescription = "Learn essential data privacy principles and regulatory compliance requirements for modern organizations.";
+                trainingOverview = "This training covers essential data privacy principles, regulatory compliance requirements (GDPR, CCPA, etc.), data handling procedures, and privacy impact assessments. Participants will learn to implement privacy best practices in their daily work.";
+                learningPoints = new List<string>
+                {
+                    "Understand key data privacy regulations and requirements",
+                    "Implement proper data handling procedures",
+                    "Conduct privacy impact assessments",
+                    "Recognize and report data privacy incidents",
+                    "Apply privacy-by-design principles"
+                };
+                prerequisites = "Basic understanding of data handling practices.";
+                trainingDateTime = "Dec 22, 2023 • 11:00 AM";
+                trainingLocation = "Virtual Training";
+                trainingDuration = "3 hours";
+                trainingCredits = "1 credit";
+                availableSpots = 15;
+                isRegistrationOpen = true;
+                break;
+
+            case "docker-intro":
+                trainingTitle = "Introduction to Docker";
+                trainingDescription = "Learn containerization fundamentals with Docker for modern application deployment and development.";
+                trainingOverview = "This hands-on introduction to Docker covers containerization fundamentals, Docker concepts, image management, container networking, and deployment strategies. Participants will gain practical experience with Docker commands and container orchestration.";
+                learningPoints = new List<string>
+                {
+                    "Understand containerization concepts and benefits",
+                    "Master basic Docker commands and operations",
+                    "Create and manage Docker images",
+                    "Implement container networking and storage",
+                    "Deploy applications using Docker containers"
+                };
+                prerequisites = "Basic command-line knowledge and understanding of application development concepts.";
+                trainingDateTime = "Dec 18, 2023 • 9:00 AM";
+                trainingLocation = "Training Lab";
+                trainingDuration = "6 hours";
+                trainingCredits = "3 credits";
+                availableSpots = 10;
+                isRegistrationOpen = true;
+                break;
+
+            case "advanced-cybersecurity":
+                trainingTitle = "Advanced Cybersecurity";
+                trainingDescription = "Deep dive into advanced cybersecurity techniques, threat hunting, and incident response strategies.";
+                trainingOverview = "This advanced cybersecurity training covers threat hunting techniques, advanced incident response, penetration testing methodologies, and security architecture design. Participants will engage in hands-on exercises with real-world security scenarios.";
+                learningPoints = new List<string>
+                {
+                    "Perform advanced threat hunting and analysis",
+                    "Implement sophisticated incident response strategies",
+                    "Conduct penetration testing and vulnerability assessments",
+                    "Design secure security architectures",
+                    "Utilize advanced security tools and techniques"
+                };
+                prerequisites = "Completion of Security Awareness Training or equivalent experience. Understanding of basic networking concepts.";
+                trainingDateTime = "Dec 28, 2023 • 1:00 PM";
+                trainingLocation = "Virtual Classroom";
+                trainingDuration = "8 hours";
+                trainingCredits = "4 credits";
+                availableSpots = 6;
+                isRegistrationOpen = true;
+                break;
+
+            default:
+                trainingTitle = "Training Not Found";
+                trainingDescription = "The requested training could not be found.";
+                trainingOverview = "Please check the training ID or return to the trainings list to browse available sessions.";
+                learningPoints = new List<string>();
+                prerequisites = "N/A";
+                trainingDateTime = "N/A";
+                trainingLocation = "N/A";
+                trainingDuration = "N/A";
+                trainingCredits = "N/A";
+                availableSpots = 0;
+                isRegistrationOpen = false;
+                break;
+        }
+    }
+
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/trainings");
+    }
+
+    private void RegisterForTraining()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+
+    private void AddToCalendar()
+    {
+        // Placeholder for calendar integration
+        NavigationManager.NavigateTo("/calendar");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Temporarily bypass authentication for testing
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // if (!isAuthenticated)
+            // {
+            //     NavigationManager.NavigateTo("/login");
+            // }
+        }
+    }
+}

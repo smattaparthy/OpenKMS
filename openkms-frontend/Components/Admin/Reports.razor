@@ -1,0 +1,268 @@
+@page "/admin/reports"
+@rendermode InteractiveServer
+@using OpenKMS.Services
+@inject OpenKMS.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Reports - OpenKMS Admin</PageTitle>
+
+<section class="d-flex flex-column gap-4">
+    <!-- Header -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="card-title" style="font-size: var(--text-3xl);">Reports & Analytics</h1>
+                    <p class="card-text">View system usage reports, training analytics, and performance metrics</p>
+                </div>
+                <button class="btn btn-secondary" @onclick="NavigateBack">
+                    <i class="bi bi-arrow-left"></i> Back to Admin Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Categories -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Report Categories</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                <i class="bi bi-people-fill text-primary me-2"></i>
+                                User Reports
+                            </h3>
+                            <p class="card-text">User registration, activity, and engagement analytics</p>
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-outline-primary btn-sm">User Registration Report</button>
+                                <button class="btn btn-outline-primary btn-sm">User Activity Summary</button>
+                                <button class="btn btn-outline-primary btn-sm">Department Breakdown</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                <i class="bi bi-book-fill text-success me-2"></i>
+                                Training Reports
+                            </h3>
+                            <p class="card-text">Training completion, attendance, and effectiveness metrics</p>
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-outline-success btn-sm">Training Completion Rates</button>
+                                <button class="btn btn-outline-success btn-sm">Attendance Analytics</button>
+                                <button class="btn btn-outline-success btn-sm">Training Effectiveness</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                <i class="bi bi-graph-up text-warning me-2"></i>
+                                Performance Reports
+                            </h3>
+                            <p class="card-text">System performance, usage trends, and capacity planning</p>
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-outline-warning btn-sm">System Usage Trends</button>
+                                <button class="btn btn-outline-warning btn-sm">Performance Metrics</button>
+                                <button class="btn btn-outline-warning btn-sm">Capacity Planning</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-4">
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">This Month</h3>
+                    <p class="h2 text-primary">156</p>
+                    <p class="text-muted small">New registrations</p>
+                    <small class="text-success">+12% from last month</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Training Completion</h3>
+                    <p class="h2 text-success">89%</p>
+                    <p class="text-muted small">Average completion rate</p>
+                    <small class="text-success">+5% from last month</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Active Users</h3>
+                    <p class="h2 text-info">1,156</p>
+                    <p class="text-muted small">Currently active</p>
+                    <small class="text-success">+8% from last month</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">System Uptime</h3>
+                    <p class="h2 text-success">99.9%</p>
+                    <p class="text-muted small">Last 30 days</p>
+                    <small class="text-success">Excellent performance</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Reports -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Recently Generated Reports</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Report Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Generated</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Format</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monthly User Registration Report</td>
+                            <td><span class="badge bg-primary">User</span></td>
+                            <td>Dec 1, 2023 • 2:30 PM</td>
+                            <td>2.4 MB</td>
+                            <td><span class="badge bg-success">PDF</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Download</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Training Completion Summary</td>
+                            <td><span class="badge bg-success">Training</span></td>
+                            <td>Nov 30, 2023 • 4:15 PM</td>
+                            <td>1.8 MB</td>
+                            <td><span class="badge bg-success">PDF</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Download</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Department Training Analytics</td>
+                            <td><span class="badge bg-success">Training</span></td>
+                            <td>Nov 28, 2023 • 10:00 AM</td>
+                            <td>3.2 MB</td>
+                            <td><span class="badge bg-primary">Excel</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Download</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>System Usage Trends</td>
+                            <td><span class="badge bg-warning">Performance</span></td>
+                            <td>Nov 25, 2023 • 3:45 PM</td>
+                            <td>4.1 MB</td>
+                            <td><span class="badge bg-success">PDF</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Download</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>User Activity Log</td>
+                            <td><span class="badge bg-primary">User</span></td>
+                            <td>Nov 20, 2023 • 1:20 PM</td>
+                            <td>5.6 MB</td>
+                            <td><span class="badge bg-primary">Excel</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1">Download</button>
+                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Options -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" style="font-size: var(--text-xl);">Generate Custom Report</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Report Type</label>
+                    <select class="form-select">
+                        <option value="">Select report type...</option>
+                        <option value="user">User Analytics</option>
+                        <option value="training">Training Metrics</option>
+                        <option value="performance">System Performance</option>
+                        <option value="combined">Combined Report</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Date Range</label>
+                    <select class="form-select">
+                        <option value="">Select date range...</option>
+                        <option value="last7days">Last 7 Days</option>
+                        <option value="last30days">Last 30 Days</option>
+                        <option value="last90days">Last 90 Days</option>
+                        <option value="thismonth">This Month</option>
+                        <option value="lastmonth">Last Month</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Export Format</label>
+                    <select class="form-select">
+                        <option value="">Select format...</option>
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary">
+                    <i class="bi bi-file-earmark-arrow-down"></i> Generate Report
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Temporarily bypass authentication for testing
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // if (!isAuthenticated)
+            // {
+            //     NavigationManager.NavigateTo("/login");
+            // }
+        }
+    }
+}

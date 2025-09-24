@@ -1,23 +1,31 @@
 {
   "Files": [
     {
-      "Id": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/Debug/net8.0/scopedcss/projectbundle/openkms-frontend.bundle.scp.css",
+      "Id": "/app/obj/Debug/net8.0/scopedcss/projectbundle/openkms-frontend.bundle.scp.css",
       "PackagePath": "staticwebassets/openkms-frontend.bundle.scp.css"
     },
     {
-      "Id": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/app.css",
+      "Id": "/app/wwwroot/app.css",
       "PackagePath": "staticwebassets/app.css"
     },
     {
-      "Id": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/bootstrap/bootstrap.min.css",
+      "Id": "/app/wwwroot/bootstrap/bootstrap.min.css",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
     },
     {
-      "Id": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Id": "/app/wwwroot/bootstrap/bootstrap.min.css.map",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Id": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/favicon.png",
+      "Id": "/app/wwwroot/css/components.css",
+      "PackagePath": "staticwebassets/css/components.css"
+    },
+    {
+      "Id": "/app/wwwroot/css/design-system.css",
+      "PackagePath": "staticwebassets/css/design-system.css"
+    },
+    {
+      "Id": "/app/wwwroot/favicon.png",
       "PackagePath": "staticwebassets/favicon.png"
     },
     {

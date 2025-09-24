@@ -1,32 +1,5 @@
-# Use ASP.NET 8.0 SDK for build stage
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
-
-# Copy main project file and restore dependencies
-COPY openkms-frontend.csproj ./
-RUN dotnet restore openkms-frontend.csproj
-
-# Copy only the necessary source files for the main application
-# Exclude test files and unnecessary directories
-COPY Program.cs ./
-COPY Properties/ ./Properties/
-COPY Components/ ./Components/
-COPY Services/ ./Services/
-COPY Models/ ./Models/
-COPY Handlers/ ./Handlers/
-COPY appsettings.json ./
-COPY appsettings.Development.json ./
-COPY wwwroot/ ./wwwroot/
-
-# Build the application
-RUN dotnet build "openkms-frontend.csproj" -c Release -o /app/build
-
-# Publish the application
-FROM build AS publish
-RUN dotnet publish "openkms-frontend.csproj" -c Release -o /app/publish
-
-# Final stage - use ASP.NET runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+# Use ASP.NET 8.0 SDK for development
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS final
 WORKDIR /app
 
 # Install additional dependencies
@@ -40,19 +13,12 @@ RUN useradd --create-home --shell /bin/bash app 2>/dev/null || true \
     && chown -R app:app /app || true
 USER app
 
-# Copy published files
-COPY --from=publish /app/publish .
-
-# Expose port (Blazor Server uses different port than backend)
+# Expose port
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:8080 || exit 1
-
-# Set environment variables for production
+# Set environment variables for development
 ENV ASPNETCORE_URLS=http://+:8080
-ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_ENVIRONMENT=Development
 
-# Run the application
-ENTRYPOINT ["dotnet", "OpenKMS.Frontend.dll"]
+# Default command (will be overridden by docker-compose)
+ENTRYPOINT ["dotnet", "run", "--project", "openkms-frontend.csproj", "--urls", "http://+:8080"]

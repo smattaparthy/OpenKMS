@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RLiK4Uyi+Y88z1FetsWYzhUnlmR2CFn91tS8Z3ej71s=",
+  "Hash": "YluXk7uwuqPwZ253JZ25EFJ3QK5P+VDFBgmYUtS41Cs=",
   "Source": "openkms-frontend",
   "BasePath": "_content/openkms-frontend",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "openkms-frontend/wwwroot",
       "Source": "openkms-frontend",
-      "ContentRoot": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/",
+      "ContentRoot": "/app/wwwroot/",
       "BasePath": "_content/openkms-frontend",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/Debug/net8.0/scopedcss/bundle/openkms-frontend.styles.css",
+      "Identity": "/app/obj/Debug/net8.0/scopedcss/bundle/openkms-frontend.styles.css",
       "SourceId": "openkms-frontend",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/Debug/net8.0/scopedcss/bundle/",
+      "ContentRoot": "/app/obj/Debug/net8.0/scopedcss/bundle/",
       "BasePath": "_content/openkms-frontend",
       "RelativePath": "openkms-frontend.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/Debug/net8.0/scopedcss/bundle/openkms-frontend.styles.css"
+      "OriginalItemSpec": "/app/obj/Debug/net8.0/scopedcss/bundle/openkms-frontend.styles.css"
     },
     {
-      "Identity": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/Debug/net8.0/scopedcss/projectbundle/openkms-frontend.bundle.scp.css",
+      "Identity": "/app/obj/Debug/net8.0/scopedcss/projectbundle/openkms-frontend.bundle.scp.css",
       "SourceId": "openkms-frontend",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/Debug/net8.0/scopedcss/projectbundle/",
+      "ContentRoot": "/app/obj/Debug/net8.0/scopedcss/projectbundle/",
       "BasePath": "_content/openkms-frontend",
       "RelativePath": "openkms-frontend.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/obj/Debug/net8.0/scopedcss/projectbundle/openkms-frontend.bundle.scp.css"
+      "OriginalItemSpec": "/app/obj/Debug/net8.0/scopedcss/projectbundle/openkms-frontend.bundle.scp.css"
     },
     {
-      "Identity": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/app.css",
+      "Identity": "/app/wwwroot/app.css",
       "SourceId": "openkms-frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/",
+      "ContentRoot": "/app/wwwroot/",
       "BasePath": "_content/openkms-frontend",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot/app.css"
     },
     {
-      "Identity": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/bootstrap/bootstrap.min.css",
+      "Identity": "/app/wwwroot/bootstrap/bootstrap.min.css",
       "SourceId": "openkms-frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/",
+      "ContentRoot": "/app/wwwroot/",
       "BasePath": "_content/openkms-frontend",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css"
     },
     {
-      "Identity": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Identity": "/app/wwwroot/bootstrap/bootstrap.min.css.map",
       "SourceId": "openkms-frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/",
+      "ContentRoot": "/app/wwwroot/",
       "BasePath": "_content/openkms-frontend",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,48 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Identity": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/favicon.png",
+      "Identity": "/app/wwwroot/css/components.css",
       "SourceId": "openkms-frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/smattaparthy/source/OpenKMS/OpenKMS/openkms-frontend/wwwroot/",
+      "ContentRoot": "/app/wwwroot/",
+      "BasePath": "_content/openkms-frontend",
+      "RelativePath": "css/components.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/components.css"
+    },
+    {
+      "Identity": "/app/wwwroot/css/design-system.css",
+      "SourceId": "openkms-frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "/app/wwwroot/",
+      "BasePath": "_content/openkms-frontend",
+      "RelativePath": "css/design-system.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/design-system.css"
+    },
+    {
+      "Identity": "/app/wwwroot/favicon.png",
+      "SourceId": "openkms-frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "/app/wwwroot/",
       "BasePath": "_content/openkms-frontend",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
