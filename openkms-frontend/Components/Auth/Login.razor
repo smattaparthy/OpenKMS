@@ -96,7 +96,16 @@
     {
         if (firstRender)
         {
-            await AuthService.InitializeAuthAsync();
+            try
+            {
+                await AuthService.InitializeAuthAsync();
+            }
+            catch (Exception ex)
+            {
+                // Handle JavaScript interop errors during static rendering
+                Console.WriteLine($"Auth initialization failed: {ex.Message}");
+                // This is expected during initial static rendering, continue normally
+            }
         }
     }
 

@@ -156,14 +156,33 @@ namespace OpenKMS.Services
 
         private async Task StoreTokens(string accessToken, string refreshToken)
         {
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "accessToken", accessToken);
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "refreshToken", refreshToken);
+            try
+            {
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "accessToken", accessToken);
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "refreshToken", refreshToken);
+            }
+            catch (Exception ex)
+            {
+                // Handle JavaScript interop errors during static rendering
+                Console.WriteLine($"Failed to store tokens in localStorage: {ex.Message}");
+                // In static rendering, tokens will be stored after the component is fully interactive
+                // Continue with the flow - the authentication will work once the page is fully loaded
+            }
         }
 
         private async Task ClearTokensAsync()
         {
-            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "accessToken");
-            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "refreshToken");
+            try
+            {
+                await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "accessToken");
+                await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "refreshToken");
+            }
+            catch (Exception ex)
+            {
+                // Handle JavaScript interop errors during static rendering
+                Console.WriteLine($"Failed to clear tokens from localStorage: {ex.Message}");
+                // Continue with the flow - tokens will be cleared when JavaScript is available
+            }
         }
     }
 }

@@ -220,9 +220,19 @@
     {
         if (firstRender)
         {
-            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
-            if (!isAuthenticated)
+            try
             {
+                var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+                if (!isAuthenticated)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle JavaScript interop errors during static rendering
+                Console.WriteLine($"Authentication check failed: {ex.Message}");
+                // For this case, assume not authenticated and redirect to login
                 NavigationManager.NavigateTo("/login");
             }
         }
